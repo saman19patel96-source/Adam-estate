@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ========================================
+   ADAM ESTATE — LUXURY DESIGN SYSTEM
+   ======================================== */
+
+:root {
+  --obsidian: #0a0a0a;
+  --obsidian-light: #111111;
+  --slate: #1a1a2e;
+  --slate-light: #242440;
+  --champagne: #c9a96e;
+  --champagne-light: #dfc496;
+  --champagne-dark: #a8893e;
+  --ivory: #f5f0e8;
+  --ivory-muted: #b8b0a0;
+  --pearl: #e8e0d4;
+  --onyx: #161621;
+  --glass-bg: rgba(26, 26, 46, 0.4);
+  --glass-border: rgba(201, 169, 110, 0.15);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@theme inline {
+  --color-obsidian: var(--obsidian);
+  --color-obsidian-light: var(--obsidian-light);
+  --color-slate: var(--slate);
+  --color-slate-light: var(--slate-light);
+  --color-champagne: var(--champagne);
+  --color-champagne-light: var(--champagne-light);
+  --color-champagne-dark: var(--champagne-dark);
+  --color-ivory: var(--ivory);
+  --color-ivory-muted: var(--ivory-muted);
+  --color-pearl: var(--pearl);
+  --color-onyx: var(--onyx);
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scrolling */
+}
+
+body {
+  background: var(--obsidian);
+  color: var(--ivory);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--champagne);
+  color: var(--obsidian);
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--champagne-dark);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--champagne);
+}
+
+/* ========================================
+   GLASSMORPHISM UTILITIES
+   ======================================== */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-strong {
+  background: rgba(26, 26, 46, 0.7);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(201, 169, 110, 0.2);
+}
+
+/* ========================================
+   ANTI-GRAVITY FLOATING ANIMATIONS
+   ======================================== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes floatDelayed {
+  0%, 100% { transform: translateY(0px); }
+  33% { transform: translateY(-10px); }
+  66% { transform: translateY(-5px); }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes scrollIndicator {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  50% { opacity: 0.4; transform: translateY(8px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: floatDelayed 7s ease-in-out infinite;
+}
+
+.animate-scroll-indicator {
+  animation: scrollIndicator 2s ease-in-out infinite;
+}
+
+/* ========================================
+   LUXURY GRADIENT OVERLAYS
+   ======================================== */
+
+.gradient-hero {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.3) 0%,
+    rgba(10, 10, 10, 0.5) 40%,
+    rgba(10, 10, 10, 0.85) 80%,
+    rgba(10, 10, 10, 1) 100%
+  );
+}
+
+.gradient-radial-gold {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(201, 169, 110, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+/* ========================================
+   MAGNETIC BUTTON STYLES
+   ======================================== */
+
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 36px;
+  background: transparent;
+  border: 1px solid var(--champagne);
+  color: var(--champagne);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+}
+
+.magnetic-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--champagne);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 0;
+}
+
+.magnetic-btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.magnetic-btn:hover {
+  color: var(--obsidian);
+  border-color: var(--champagne);
+  box-shadow: 0 0 30px rgba(201, 169, 110, 0.2);
+}
+
+.magnetic-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   PROPERTY CARD GLOW
+   ======================================== */
+
+.card-glow {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(201, 169, 110, 0.3),
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(201, 169, 110, 0.06);
+  transform: translateY(-4px);
+}
+
+/* ========================================
+   SECTION DIVIDER
+   ======================================== */
+
+.section-divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--champagne), transparent);
+}
+
+/* ========================================
+   ADMIN DASHBOARD STYLES
+   ======================================== */
+
+.admin-card {
+  background: var(--obsidian-light);
+  border: 1px solid rgba(201, 169, 110, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.admin-card:hover {
+  border-color: rgba(201, 169, 110, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.admin-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--obsidian);
+  border: 1px solid rgba(201, 169, 110, 0.15);
+  border-radius: 8px;
+  color: var(--ivory);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: var(--champagne);
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.1);
+}
+
+.admin-input::placeholder {
+  color: var(--ivory-muted);
+  opacity: 0.5;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.status-available {
+  background: rgba(72, 187, 120, 0.15);
+  color: #68d391;
+  border: 1px solid rgba(72, 187, 120, 0.2);
+}
+
+.status-sold {
+  background: rgba(245, 101, 101, 0.15);
+  color: #fc8181;
+  border: 1px solid rgba(245, 101, 101, 0.2);
+}
