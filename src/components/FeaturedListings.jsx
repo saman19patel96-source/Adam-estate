@@ -1,94 +1,37 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import PropertyCard from "./PropertyCard";
-
-// Fallback sample data when Supabase is not configured
-const sampleProperties = [
-  {
-    id: "1",
-    title: "The Celestial Penthouse",
-    price: 250000000,
-    location: "Worli, Mumbai",
-    bedrooms: 5,
-    bathrooms: 6,
-    sqft: 8500,
-    status: "available",
-    image_url:
-      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80",
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "Azure Oceanfront Villa",
-    price: 180000000,
-    location: "Juhu, Mumbai",
-    bedrooms: 4,
-    bathrooms: 5,
-    sqft: 6200,
-    status: "available",
-    image_url:
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
-    featured: true,
-  },
-  {
-    id: "3",
-    title: "Imperial Heritage Manor",
-    price: 420000000,
-    location: "Malabar Hill, Mumbai",
-    bedrooms: 7,
-    bathrooms: 8,
-    sqft: 12000,
-    status: "available",
-    image_url:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
-    featured: true,
-  },
-  {
-    id: "4",
-    title: "Skyline Duplex Residence",
-    price: 95000000,
-    location: "Bandra West, Mumbai",
-    bedrooms: 3,
-    bathrooms: 4,
-    sqft: 4500,
-    status: "sold",
-    image_url:
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
-    featured: true,
-  },
-  {
-    id: "5",
-    title: "The Sapphire Terrace",
-    price: 310000000,
-    location: "Lower Parel, Mumbai",
-    bedrooms: 6,
-    bathrooms: 7,
-    sqft: 9800,
-    status: "available",
-    image_url:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
-    featured: true,
-  },
-  {
-    id: "6",
-    title: "Emerald Bay Estate",
-    price: 560000000,
-    location: "Alibaug, Mumbai",
-    bedrooms: 8,
-    bathrooms: 10,
-    sqft: 15000,
-    status: "available",
-    image_url:
-      "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=800&q=80",
-    featured: true,
-  },
-];
+import { supabase } from "@/lib/supabaseClient";
+import { Loader2 } from "lucide-react";
 
 export default function FeaturedListings() {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    async function fetchFeaturedProperties() {
+      try {
+        const { data, error } = await supabase
+          .from("properties")
+          .select("*")
+          .eq("featured", true)
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        setProperties(data || []);
+      } catch (err) {
+        console.error("Error fetching properties:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFeaturedProperties();
+  }, []);
 
   return (
     <section id="featured" className="relative py-32 px-6 lg:px-8" ref={ref}>
@@ -135,22 +78,36 @@ export default function FeaturedListings() {
         </div>
 
         {/* Property Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sampleProperties.map((property, index) => (
-            <motion.div
-              key={property.id}
-              initial={{ opacity: 0, y: 60 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.8,
-                delay: 0.2 + index * 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-            >
-              <PropertyCard property={property} index={index} />
-            </motion.div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-10 h-10 text-champagne animate-spin" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {properties.length > 0 ? (
+              properties.map((property, index) => (
+                <motion.div
+                  key={property.id}
+                  initial={{ opacity: 0, y: 60 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.2 + index * 0.1,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  }}
+                >
+                  <PropertyCard property={property} index={index} />
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-20">
+                <p className="text-ivory-muted font-light">
+                  No featured properties found. Add some in the Admin panel!
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
